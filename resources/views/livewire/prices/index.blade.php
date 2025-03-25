@@ -1,7 +1,7 @@
 <div>
     <div class="row justify-content-between">
         <div class="col-6">
-            <h3>Harga</h3>
+            <h1>Harga</h1>
         </div>
     </div>
 

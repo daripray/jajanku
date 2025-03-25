@@ -14,8 +14,8 @@
     </head>
     <body data-bs-theme="{{ session()->get('theme') }}">
         <x-navigation-menu/>
-        <div class="container pt-4 mt-4">
-            <div class="mt-4 row">
+        <div class="container">
+            <div class="mb-5 row">
                 {{ $slot }}
             </div>
         </div>

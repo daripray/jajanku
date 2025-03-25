@@ -1,64 +1,59 @@
-<div class="container mt-4">
-    <h1>Penjualan</h1>
-    
-    @if(session()->has('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
+<div class="mt-2">
+    <div class="mb-3 row justify-content-between">
+        <div class="col-6">
+            <h1>Sales</h1>
         </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-create" title="Create" wire:click="create()" ><i class="bi bi-plus"></i></button>
+        </div>
+    </div>
+
+    @if($isOpen)
+{{--        @include('livewire.sales.modal')--}}
     @endif
 
-    <div class="mb-3">
-        <button class="btn btn-primary" wire:click="openModal">Tambah Penjualan</button>
-    </div>
+	@if (session()->has('message_'))
+		<div class="alert alert-success">
+			{{ session('message') }}
+		</div>
+	@endif
 
-    <!-- Filter -->
-    <div class="mb-3">
-        <form>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="filterDate" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" id="filterDate" wire:model="filterDate">
-                </div>
-                <div class="col-md-3">
-                    <label for="filterOutlet" class="form-label">Outlet</label>
-                    <select class="form-select" id="filterOutlet" wire:model="filterOutlet">
-                        <option value="">Pilih Outlet</option>
-                        @foreach($outlets as $outlet)
-                            <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+{{--    {{dd($data_sales)}}--}}
+    <!-- Tampilkan data menggunakan card dengan infinite scroll -->
+    @foreach($data_sales as $sale)
+        <div class="card mb-4 shadow">
+			<div class="card-header text-center">
+                 <h5 class="card-title text-{{ $sale->paidoff ? 'success' : 'warning'}}">{{ $sale->date }} {{$sale->outlet->name}}</h5> 
+                 <cite class="text-secondary opacity-50">{{ $sale->paidoff ? '' : 'Belum Lunas.'}}</cite> 
             </div>
-        </form>
-    </div>
-
-    <!-- List Penjualan -->
-    @foreach($sales as $sale)
-        <div class="card mb-3">
-            <div class="card-header">
-                <h5 class="card-title">Penjualan #{{ $sale->id }} - {{ $sale->outlet->name }} - {{ $sale->date->format('d-m-Y') }}</h5>
-                <button class="btn btn-primary btn-sm" wire:click="openModal({{ $sale->id }})">Edit</button>
-            </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    @foreach($sale->details as $detail)
-                        <li class="list-group-item">
-                            {{ $detail->item->name }} - {{ number_format($detail->price, 0, ',', '.') }} x {{ $detail->sold }} = {{ number_format($detail->total, 0, ',', '.') }}
-                        </li>
-                    @endforeach
-                </ul>
-                <div class="mt-3">
-                    <strong>Total: </strong> {{ number_format($sale->total, 0, ',', '.') }}
+{{--            <div class="card-body {{ $sale->paidoff && sizeof($sale->outlet->sales) ? 'collapse show' : 'collapse' }}" id="collapse_{{ $sale->outlet->id }}">--}}
+            <div class="card-body" id="collapse_">
+                @if (session()->has('message_'.$sale->outlet->id))
+                <div class="alert alert-success">
+                    {{ session('message_'.$sale->outlet->id) }}
                 </div>
+				@endif
+{{--                @foreach ($sale->outlet->sales as $sales)--}}
+{{--                    <div class="row {{ $sales->item->status?'':'text-secondary' }}">--}}
+{{--                        <p class="col-auto me-auto"><strong>{{ $sales->item->name }}</strong></p>--}}
+{{--                        <span class="col-auto {{ $sales->item->status?'':'text-secondary' }}">{{ number_format($sales->quantity, 0,",",".") }}</span>--}}
+{{--                    </div>--}}
+{{--                @endforeach--}}
+                
+                    <div class="row {{ $sale->item->status?'':'text-secondary' }}">
+                        <p class="col-auto me-auto"><strong>{{ $sale->item->name }}</strong></p>
+                        <span class="col-auto {{ $sale->item->status?'':'text-secondary' }}">{{ number_format($sale->quantity, 0,",",".") }}</span>
+                    </div>
+            </div>
+            
+            <div class="card-footer text-center">
+				<div class="row justify-content-between">
+					<div class="col">
+{{--						<button class="btn btn-{{!$outlet->status?'hide':'update'}}" wire:click="update({{ $outlet->id }})"><i class="bi bi-pencil"></i> Edit</button>--}}
+					</div>
+				</div>
             </div>
         </div>
     @endforeach
-
-    <!-- Pagination -->
-{{--    {{ $sales->links() }}--}}
-
-    <!-- Modal -->
-    @if($isOpen)
-        @include('livewire.sales.modal')
-    @endif
 </div>
+

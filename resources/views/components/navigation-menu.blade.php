@@ -1,4 +1,15 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+{{--d-none d-lg-block--}}
+{{--d-lg-none--}}
+<style>
+    .rounded-circle{
+        width: 44px;
+        height: 44px;
+        background-color: lightsteelblue;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+</style>
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top d-none d-lg-block">
     <div class="container-fluid">
       <div>
         {{-- <a class="navbar-brand" href="{{ config('app.url') }}">{{ config('app.name') }}</a> --}}
@@ -14,15 +25,11 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-
           <x-nav-link :active="request()->routeIs('home')" href="{{ route('home') }}">Home</x-nav-link>
-
-
           <x-nav-link :active="request()->routeIs('items.index')" href="{{ route('items.index') }}">Food</x-nav-link>
           <x-nav-link :active="request()->routeIs('outlets.index')" href="{{ route('outlets.index') }}">Outlets</x-nav-link>
           <x-nav-link :active="request()->routeIs('prices.index')" href="{{ route('prices.index') }}">Prices</x-nav-link>
           <x-nav-link :active="request()->routeIs('sales.index')" href="{{ route('sales.index') }}">Sales</x-nav-link>
-
           <x-nav-link :active="request()->routeIs('features.show')" href="{{ route('features.show') }}">Features</x-nav-link>
 
 
@@ -80,3 +87,40 @@
       </div>
     </div>
   </nav>
+<div class="row fixed-bottom border-top border-primary d-lg-none bg-white pt-1 pb-2 ps-3 pe-3">
+    <div class="col text-center">
+        <div class="m-auto {{ request()->routeIs('items.index') ? 'rounded-circle fs-2 pt-1' : 'fs-4 pt-2 pb-1' }}">
+            <a class="{{ request()->routeIs('items.index') ? 'text-blue fw-bold' : 'text-secondary' }}"
+               wire:navigate href="{{ route('items.index') }}"> <i class="bi bi-egg-fried"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col text-center ">
+        <div class="m-auto {{ request()->routeIs('outlets.index') ? 'rounded-circle fs-2 pt-1' : 'fs-4 pt-2 pb-1' }}">
+            <a class="{{ request()->routeIs('outlets.index') ? 'text-blue fw-bold' : 'text-secondary' }}"
+               wire:navigate href="{{ route('outlets.index') }}"> <i class="bi bi-shop"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col text-center ">
+        <div class="m-auto {{ request()->routeIs('home') ? 'rounded-circle fs-2 pt-1' : 'fs-4 pt-2 pb-1' }}">
+            <a class="{{ request()->routeIs('home') ? 'text-blue fw-bold' : 'text-secondary' }}"
+               wire:navigate href="{{ route('home') }}"> <i class="bi bi-house-door"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col text-center ">
+        <div class="m-auto {{ request()->routeIs('prices.index') ? 'rounded-circle fs-2 pt-1' : 'fs-4 pt-2 pb-1' }}">
+            <a class="{{ request()->routeIs('prices.index') ? 'text-blue fw-bold' : 'text-secondary' }}"
+               wire:navigate href="{{ route('prices.index') }}"> <i class="bi bi-tags"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col text-center ">
+        <div class="m-auto {{ request()->routeIs('sales.index') ? 'rounded-circle fs-2 pt-1' : 'fs-4 pt-2 pb-1' }}">
+            <a class="{{ request()->routeIs('sales.index') ? 'text-blue fw-bold' : 'text-secondary' }}"
+               wire:navigate href="{{ route('sales.index') }}"> <i class="bi bi-cart4"></i>
+            </a>
+        </div>
+    </div>
+</div>
